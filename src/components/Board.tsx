@@ -17,12 +17,12 @@ export function Board({ board, onPlaceChampion, level }: BoardProps) {
   };
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-2 sm:gap-4 h-full">
       {/* Player's Board (Blue) */}
-      <div className="w-[200px] bg-blue-900/20 p-4 rounded-lg">
-        <div className="grid grid-cols-2 gap-2">
+      <div className="bg-blue-900/20 p-2 sm:p-4 rounded-lg flex-1">
+        <div className="grid grid-cols-2 gap-1 sm:gap-2 h-full">
           {/* Back row - 5 hexes */}
-          <div className="flex flex-col gap-2 mt-10">
+          <div className="flex flex-col gap-1 sm:gap-2 mt-[10%]">
             {Array.from({ length: 5 }).map((_, index) => {
               const x = index % 2;
               const y = Math.floor(index / 2);
@@ -40,11 +40,11 @@ export function Board({ board, onPlaceChampion, level }: BoardProps) {
               );
             })}
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1 sm:gap-2">
             {/* Front row - 6 hexes */}
             {Array.from({ length: 6 }).map((_, index) => {
               const x = index % 2;
-              const y = Math.floor(index / 2) + 3; // Start after back row
+              const y = Math.floor(index / 2) + 3;
               const cell = board[y]?.[x];
 
               return (
@@ -63,9 +63,9 @@ export function Board({ board, onPlaceChampion, level }: BoardProps) {
       </div>
 
       {/* Enemy Board (Red) */}
-      <div className="w-[200px] bg-red-900/20 p-4 rounded-lg">
-        <div className="grid grid-cols-2 gap-2">
-          <div className="flex flex-col gap-2 ">
+      <div className="bg-red-900/20 p-2 sm:p-4 rounded-lg flex-1">
+        <div className="grid grid-cols-2 gap-1 sm:gap-2 h-full">
+          <div className="flex flex-col gap-1 sm:gap-2 ">
             {/* Front row - 6 hexes */}
             {Array.from({ length: 6 }).map((_, index) => {
               const x = index % 2;
@@ -85,7 +85,7 @@ export function Board({ board, onPlaceChampion, level }: BoardProps) {
             })}
           </div>
           {/* Back row - 5 hexes */}
-          <div className="flex flex-col gap-2 mt-10">
+          <div className="flex flex-col gap-1 sm:gap-2 mt-[10%]">
             {Array.from({ length: 5 }).map((_, index) => {
               const x = index % 2;
               const y = Math.floor(index / 2) + 6; // Start after player board
@@ -103,21 +103,6 @@ export function Board({ board, onPlaceChampion, level }: BoardProps) {
               );
             })}
           </div>
-        </div>
-      </div>
-
-      {/* Bench Area */}
-      <div className="flex-1">
-        <h2 className="text-xl font-semibold mb-4">Bench</h2>
-        <div className="grid grid-cols-3 gap-2">
-          {Array.from({ length: 9 }).map((_, index) => (
-            <div
-              key={`bench-${index}`}
-              className="bg-gray-800/50 rounded-lg aspect-square"
-              onDrop={(e) => handleDrop(e, -1, index)}
-              onDragOver={(e) => e.preventDefault()}
-            />
-          ))}
         </div>
       </div>
     </div>
