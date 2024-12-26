@@ -1,7 +1,7 @@
 import React from "react";
 import { Board } from "./components/Board";
 import { Shop } from "./components/Shop";
-import { Champion } from "./components/Champion";
+import { ChampionCard } from "./components/champion-button/ChampionCard";
 import { Bench } from "./components/Bench";
 import { useGameState } from "./hooks/useGameState";
 import { XP_COST } from "./constants/gameConstants";
@@ -53,7 +53,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-7xl mx-auto space-y-8">
         <div className="flex justify-between items-center">
           <div className="space-y-1">
             <h1 className="text-2xl font-bold">Teamfight Tactics</h1>
@@ -98,7 +98,7 @@ function App() {
           <div className="flex gap-2">
             {currentPlayer.bench.map((champion, index) => (
               <div key={index} className="relative">
-                <Champion champion={champion} />
+                <ChampionCard champion={champion} />
                 <button
                   onClick={() => handleSellChampion(champion)}
                   className="absolute top-0 right-0 bg-red-500 hover:bg-red-600 rounded-full w-5 h-5 flex items-center justify-center text-xs"

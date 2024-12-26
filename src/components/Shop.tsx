@@ -1,16 +1,16 @@
-import React, { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 import { Champion as ChampionType } from "../types/game";
-import { Champion } from "./Champion";
+import { ChampionCard } from "./champion-button/ChampionCard";
 
 interface ShopProps {
-  champions: ChampionType[];
-  gold: number;
-  level: number;
-  onBuyChampion: (champion: ChampionType) => void;
-  onRefreshShop: () => void;
-  isLocked: boolean;
-  onToggleLock: () => void;
-  benchLength: number;
+  readonly champions: ChampionType[];
+  readonly gold: number;
+  readonly level: number;
+  readonly onBuyChampion: (champion: ChampionType) => void;
+  readonly onRefreshShop: () => void;
+  readonly isLocked: boolean;
+  readonly onToggleLock: () => void;
+  readonly benchLength: number;
 }
 
 export function Shop({
@@ -74,17 +74,6 @@ export function Shop({
       .map(() => getRandomChampionForLevel())
   );
 
-  const handleRefreshShop = useCallback(() => {
-    if (gold >= 2 && !isLocked) {
-      setShopSlots(
-        Array(5)
-          .fill(null)
-          .map(() => getRandomChampionForLevel())
-      );
-      onRefreshShop();
-    }
-  }, [gold, isLocked, onRefreshShop, getRandomChampionForLevel]);
-
   const handleBuyChampion = (champion: ChampionType, slotIndex: number) => {
     if (gold >= champion.cost) {
       setShopSlots((prev) => {
@@ -122,19 +111,18 @@ export function Shop({
       </div>
       <div className="flex gap-2">
         {shopSlots.map((champion, index) => (
-          <div key={index} className="w-24">
+          <div key={index} className="w-40">
             {champion && (
               <button
                 onClick={() => handleBuyChampion(champion, index)}
                 disabled={gold < champion.cost || benchLength >= 9}
-                className="w-full p-2 bg-gray-700/50 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
+                className="w-full bg-gray-700/50 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
               >
-                <Champion champion={champion} isDraggable={false} />
-                <div className="mt-1 text-center">{champion.cost} 🪙</div>
+                <ChampionCard champion={champion} isDraggable={false} />
               </button>
             )}
             {!champion && (
-              <div className="w-full h-24 bg-gray-700/20 rounded-lg" />
+              <div className="w-full h-32 bg-gray-700/20 rounded-lg" />
             )}
           </div>
         ))}
