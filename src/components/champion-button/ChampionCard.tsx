@@ -8,18 +8,20 @@ interface ChampionProps {
   readonly champion: ChampionType;
   readonly isDraggable?: boolean;
   readonly size?: "small" | "normal";
+  readonly onClick?: () => void;
 }
 
 export function ChampionCard({
   champion,
   isDraggable = true,
-  size = "normal",
+  onClick,
 }: ChampionProps) {
   return (
     <div className="group relative w-full h-full min-w-[4rem]">
       <button
         type="button"
         draggable={isDraggable}
+        onClick={onClick}
         onDragStart={(e) => {
           e.dataTransfer.setData("champion", JSON.stringify(champion));
         }}
@@ -34,6 +36,19 @@ export function ChampionCard({
           ${getChampionColor(champion.cost)}
         `}
       >
+        {/* Stars */}
+        <div className="absolute top-1 right-1 flex gap-0.5 z-10">
+          {Array.from({ length: champion.stars }).map((_, i) => (
+            <span
+              key={i}
+              className="text-yellow-400 text-sm"
+              style={{ textShadow: "0 0 2px rgba(0,0,0,0.8)" }}
+            >
+              ★
+            </span>
+          ))}
+        </div>
+
         {/* Traits */}
         <div
           className={`
@@ -47,7 +62,6 @@ export function ChampionCard({
           <ChampionTraits traits={champion.traits} />
         </div>
 
-        {/* Champion Image */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <img
           src={`https://rerollcdn.com/characters/Skin/13/${champion.name}.png`}
@@ -56,7 +70,6 @@ export function ChampionCard({
           loading="lazy"
         />
 
-        {/* Bottom Info Bar */}
         <div
           className={`
             absolute bottom-0 left-0 right-0 

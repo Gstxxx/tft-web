@@ -14,6 +14,7 @@ export interface Ability {
 }
 
 export interface Champion {
+  uuid: string;
   id: string;
   name: string;
   cost: number;
@@ -50,7 +51,7 @@ export interface Player {
 export interface GameState {
   players: Player[];
   currentRound: number;
-  phase: 'planning' | 'combat';
+  phase: "planning" | "combat";
   shop: Champion[];
   shopLocked: boolean;
 }

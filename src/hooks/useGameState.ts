@@ -3,7 +3,9 @@ import { Champion as ChampionType, GameState } from "../types/game";
 import { SAMPLE_CHAMPIONS } from "../data/champions";
 import { calculateGoldIncome } from "../utils/goldCalculator";
 import { createEmptyBoard } from "../utils/boardUtils";
-import { upgradeChampions } from "../utils/championUtils";
+import { getRandomChampions, upgradeChampions } from "../utils/championUtils";
+import { getUpgradedStats } from "../utils/championUpgrade";
+import { Champion } from "../types/game";
 import {
   INITIAL_GOLD,
   XP_COST,
@@ -27,7 +29,7 @@ export function useGameState() {
     ],
     currentRound: 1,
     phase: "planning",
-    shop: SAMPLE_CHAMPIONS,
+    shop: getRandomChampions(5),
     shopLocked: false,
   });
 
@@ -162,24 +164,16 @@ export function useGameState() {
     }
   };
 
-  const handleUpdateBench = (newBench: ChampionType[]) => {
-    console.log("handleUpdateBench called with:", newBench);
-    const upgradedBench = upgradeChampions(newBench);
-    console.log("After upgradeChampions:", upgradedBench);
-
-    setGameState((prev) => {
-      const newState = {
-        ...prev,
-        players: [
-          {
-            ...currentPlayer,
-            bench: upgradedBench,
-          },
-        ],
-      };
-      console.log("New game state:", newState);
-      return newState;
-    });
+  const handleUpdateBench = (newBench: Champion[]) => {
+    setGameState((prev) => ({
+      ...prev,
+      players: [
+        {
+          ...prev.players[0],
+          bench: newBench,
+        },
+      ],
+    }));
   };
 
   const handleSellChampion = (champion: ChampionType) => {

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Champion as ChampionType } from "../types/game";
+import { Champion } from "../types/game";
 import { ChampionCard } from "./champion-button/ChampionCard";
 import {
   findUpgradeableTrios,
@@ -7,13 +7,13 @@ import {
 } from "../utils/championUpgrade";
 
 interface BenchProps {
-  bench: ChampionType[];
-  onUpdateBench: (newBench: ChampionType[]) => void;
+  bench: Champion[];
+  onUpdateBench: (newBench: Champion[]) => void;
 }
 
 export function Bench({ bench, onUpdateBench }: BenchProps) {
-  const handleSellChampion = (champion: ChampionType) => {
-    const newBench = bench.filter((c) => c.instanceId !== champion.instanceId);
+  const handleSellChampion = (champion: Champion) => {
+    const newBench = bench.filter((c) => c.uuid !== champion.uuid);
     onUpdateBench(newBench);
   };
 
@@ -27,35 +27,31 @@ export function Bench({ bench, onUpdateBench }: BenchProps) {
       upgradeableTrios.forEach((trio) => {
         // Remove the three champions used for upgrade
         trio.forEach((champion) => {
-          const index = newBench.findIndex(
-            (c) => c.instanceId === champion.instanceId
-          );
+          const index = newBench.findIndex((c) => c.uuid === champion.uuid);
           if (index !== -1) {
             newBench.splice(index, 1);
           }
         });
 
         // Add the upgraded champion
+        const baseChampion = trio[0];
         const upgradedChampion = getUpgradedStats(
-          trio[0],
-          (trio[0].stars + 1) as 2 | 3
+          baseChampion,
+          (baseChampion.stars + 1) as 1 | 2 | 3
         );
         newBench.push(upgradedChampion);
       });
 
       onUpdateBench(newBench);
     }
-  }, [bench]);
+  }, [bench, onUpdateBench]);
 
   return (
     <div className="bg-gray-800/50 p-4 rounded-lg">
       <h2 className="text-lg font-semibold mb-4">Bench</h2>
       <div className="flex gap-2 overflow-x-auto pb-2">
         {bench.map((champion, index) => (
-          <div
-            key={champion.instanceId || index}
-            className="relative flex-shrink-0"
-          >
+          <div key={champion.uuid || index} className="relative flex-shrink-0">
             <ChampionCard champion={champion} />
             <button
               onClick={() => handleSellChampion(champion)}

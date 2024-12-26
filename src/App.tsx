@@ -4,6 +4,7 @@ import { Shop } from "./components/Shop";
 import { ChampionCard } from "./components/champion-button/ChampionCard";
 import { useGameState } from "./hooks/useGameState";
 import { XP_COST } from "./constants/gameConstants";
+import { Bench } from "./components/Bench";
 
 function App() {
   const {
@@ -15,6 +16,7 @@ function App() {
     handleBuyXP,
     handleSellChampion,
     handleToggleShopLock,
+    handleUpdateBench,
   } = useGameState();
 
   return (
@@ -90,6 +92,10 @@ function App() {
                 )}
               </div>
             </div>
+            <Bench
+              bench={currentPlayer.bench}
+              onUpdateBench={handleUpdateBench}
+            />
           </div>
         </div>
       </div>
