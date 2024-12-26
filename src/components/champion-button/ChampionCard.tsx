@@ -7,9 +7,16 @@ import { getChampionColor } from "./utils";
 interface ChampionProps {
   readonly champion: ChampionType;
   readonly isDraggable?: boolean;
+  readonly size?: "small" | "normal";
 }
 
-export function ChampionCard({ champion, isDraggable = true }: ChampionProps) {
+export function ChampionCard({
+  champion,
+  isDraggable = true,
+  size = "normal",
+}: ChampionProps) {
+  const sizeClasses = size === "small" ? "w-20 h-16" : "w-40 h-32";
+
   return (
     <div className="group relative">
       <button
@@ -19,7 +26,7 @@ export function ChampionCard({ champion, isDraggable = true }: ChampionProps) {
           e.dataTransfer.setData("champion", JSON.stringify(champion));
         }}
         className={`
-          relative w-40 h-32 
+          relative ${sizeClasses}
           rounded-lg border
           flex flex-col items-center justify-center 
           transition-all duration-200
@@ -29,7 +36,11 @@ export function ChampionCard({ champion, isDraggable = true }: ChampionProps) {
         `}
       >
         {/* Traits */}
-        <div className="absolute left-1 top-1 flex flex-col gap-1 z-10">
+        <div
+          className={`absolute left-1 top-1 flex flex-col gap-1 z-10 ${
+            size === "small" ? "scale-75 -translate-x-1" : ""
+          }`}
+        >
           <ChampionTraits traits={champion.traits} />
         </div>
 
@@ -47,12 +58,20 @@ export function ChampionCard({ champion, isDraggable = true }: ChampionProps) {
             champion.cost
           )} backdrop-blur-sm`}
         >
-          <span className="text-xs font-medium text-white drop-shadow-md">
+          <span
+            className={`font-medium text-white drop-shadow-md ${
+              size === "small" ? "text-[10px]" : "text-xs"
+            }`}
+          >
             {champion.name}
           </span>
           <div className="flex items-center gap-0.5">
-            <Coins className="w-3 h-3 text-yellow-400" />
-            <span className="text-xs font-medium text-yellow-400">
+            <Coins className={size === "small" ? "w-2 h-2" : "w-3 h-3"} />
+            <span
+              className={`font-medium text-yellow-400 ${
+                size === "small" ? "text-[10px]" : "text-xs"
+              }`}
+            >
               {champion.cost}
             </span>
           </div>

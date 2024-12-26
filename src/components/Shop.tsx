@@ -118,7 +118,11 @@ export function Shop({
                 disabled={gold < champion.cost || benchLength >= 9}
                 className="w-full bg-gray-700/50 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
               >
-                <ChampionCard champion={champion} isDraggable={false} />
+                <ChampionCard
+                  champion={champion}
+                  isDraggable={false}
+                  size="normal"
+                />
               </button>
             )}
             {!champion && (
